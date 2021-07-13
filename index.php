@@ -72,6 +72,7 @@ class SalesController
             $customer_mail = $val["customer_mail"];
             $product_id = $val["product_id"];
             $product_name = $val['product_name'];
+            $refined_product_name = $this->conn->real_escape_string($product_name);
             $product_price = $val['product_price'];
             $sale_date = $val['sale_date'];
             $queryJSON = "INSERT INTO bookshop 
@@ -80,7 +81,7 @@ class SalesController
                 '" . $customer_name . "',
                 '" . $customer_mail . "',
                 '" . $product_id . "',
-                '" . $product_name . "',
+                '" . $refined_product_name . "',
                 '" . $product_price . "',
                 '" . $sale_date . "'
                 )";
@@ -148,7 +149,7 @@ class SalesController
     ?>
         <table id="shop" style="width:100%">
             <?php
-            if ($printOnce==0) {
+            if ($printOnce == 0) {
             ?>
                 <tr>
                     <th>Sale ID</th>
@@ -162,7 +163,6 @@ class SalesController
             <?php
             }
             ?>
-            
             <tr>
                 <td><?php echo $rows["sale_id"] ?></td>
                 <td><?php echo $rows["customer_name"] ?></td>
@@ -173,14 +173,14 @@ class SalesController
                 <td><?php echo $rows["sale_date"] ?></td>
             </tr>
             <tr>
-                <td colspan="7">Total Price : </td>
+            <?php
+            $sum += $rows['product_price'];
+            $printOnce++;
+        }
+            ?>
+            <td colspan="7">Total Price : <?php echo $sum ?></td>
             </tr>
         </table>
 
 </body>
-
 </html>
-<?php
-    $printOnce++;
-    }
-?>
