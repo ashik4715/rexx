@@ -15,6 +15,7 @@ $password = "password";
 $dbname = "rexx";
 $salesController = new SalesController($servername, $username, $password, $dbname);
 $connect = new mysqli($servername, $username, $password, $dbname);
+$salesController->read();
 
 class SalesController
 {
@@ -34,15 +35,14 @@ class SalesController
             customer_mail VARCHAR(100) NOT NULL,
             product_id MEDIUMINT(8) UNSIGNED NOT NULL,
             product_name VARCHAR(100) NOT NULL,
-            product_price VARCHAR(1000) NOT NULL,
+            product_price VARCHAR(100) NOT NULL,
             sale_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             ) ENGINE=INNODB;";
 
         if ($this->conn->query($sql) === TRUE) {
             echo "Table BookShop created successfully \n";
         } else {
-            echo "Error creating table: " . $this->conn->error;
-            
+            echo "Error creating table: " . $this->conn->error . "\n";
         }
     }
 
@@ -57,6 +57,36 @@ class SalesController
                 echo $name;
             }
         }
+
+        // get containts from sales JSON
+        $jsonContents = file_get_contents('sales.json');
+
+        // decode JSON data to PHP array
+        $data = json_decode($jsonContents, true);
+
+        // fetch sales details and assign to variables for database insertion
+        // Insert the fetched Data into Database 
+        foreach ($data as $val) {
+            $sale_id = $val["sale_id"];
+            $customer_name = $val["customer_name"];
+            $customer_mail = $val["customer_mail"];
+            $product_id = $val["product_id"];
+            $product_name = $val['product_name'];
+            $product_price = $val['product_price'];
+            $sale_date = $val['sale_date'];
+            $queryJSON = "INSERT INTO bookshop 
+            VALUES (
+                '" . $sale_id . "',
+                '" . $customer_name . "',
+                '" . $customer_mail . "',
+                '" . $product_id . "',
+                '" . $product_name . "',
+                '" . $product_price . "',
+                '" . $sale_date . "'
+                )";
+            mysqli_query($this->conn, $queryJSON);
+        }
+        print_r($data);
     }
 }
 
@@ -108,22 +138,31 @@ class SalesController
     <?php
     /**
      * database query for displaying all rows into html table
-     * @param sql1
+     * @param sql1 to print all existing data of database
+     * @param printOnce is to print only once of HTML Table Head Rows
      */
+    $printOnce = 0;
     $sql1 = "SELECT * from `bookshop`;";
     $result1 = $connect->query($sql1);
     while ($rows = $result1->fetch_array()) {
     ?>
         <table id="shop" style="width:100%">
-            <tr>
-                <th>Sale ID</th>
-                <th>Customer Name</th>
-                <th>Customer Mail</th>
-                <th>Product Name</th>
-                <th>Product ID</th>
-                <th>Product Price</th>
-                <th>Sale Date</th>
-            </tr>
+            <?php
+            if ($printOnce==0) {
+            ?>
+                <tr>
+                    <th>Sale ID</th>
+                    <th>Customer Name</th>
+                    <th>Customer Mail</th>
+                    <th>Product Name</th>
+                    <th>Product ID</th>
+                    <th>Product Price</th>
+                    <th>Sale Date</th>
+                </tr>
+            <?php
+            }
+            ?>
+            
             <tr>
                 <td><?php echo $rows["sale_id"] ?></td>
                 <td><?php echo $rows["customer_name"] ?></td>
@@ -142,5 +181,6 @@ class SalesController
 
 </html>
 <?php
+    $printOnce++;
     }
 ?>
