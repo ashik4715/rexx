@@ -1,3 +1,10 @@
+<?php require('index.php') ?>
+/**
+* database query for displaying all rows into html table
+* @param sql
+*/
+$sql = mysql_query("SELECT * FROM products"); 
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,6 +48,11 @@
 </head>
 
 <body>
+
+    <?php
+    while($rows = mysql_fetch_array($sql))
+    { 
+
     <table id="shop" style="width:100%">
         <tr>
             <th>Sale ID</th>
@@ -52,27 +64,19 @@
             <th>Sale Date</th>
         </tr>
         <tr>
-            <td>1</td>
-            <td>Reto Fanzen</td>
-            <td>reto.fanzen@no-reply.rexx-systems.com</td>
-            <td>1</td>
-            <td>Refactoring: Improving the Design of Existing Code</td>
-            <td>49.99</td>
-            <td>2019-04-02 08:05:12</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Reto Fanzen</td>
-            <td>reto.fanzen@no-reply.rexx-systems.com</td>
-            <td>2</td>
-            <td>Refactoring: Improving the Design of Existing Code</td>
-            <td>49.99</td>
-            <td>2019-04-02 08:05:12</td>
+            <td>echo "$rows[$sale_id]"</td>
+            <td>echo "$rows[$customer_name]</td>
+            <td>echo "$rows[$customer_mail]"</td>
+            <td>echo "$rows[$product_name]"</td>
+            <td>echo "$rows[$product_id]"</td>
+            <td>echo "$rows[$product_price]"</td>
+            <td>echo "$rows[$sale_date]"</td>
         </tr>
         <tr>
             <td colspan="7">Total Price : </td>
         </tr>
     </table>
+    ?>
 </body>
 
 </html>
