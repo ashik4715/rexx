@@ -120,6 +120,26 @@ class SalesController
             background-color: #04AA6D;
             color: white;
         }
+
+        th,
+        td,
+        p,
+        input {
+            font: 14px Verdana;
+        }
+
+        table,
+        th,
+        td {
+            border: solid 1px #DDD;
+            border-collapse: collapse;
+            padding: 2px 3px;
+            text-align: center;
+        }
+
+        th {
+            font-weight: bold;
+        }
     </style>
 
 </head>
@@ -170,7 +190,7 @@ class SalesController
             <td colspan="7">Total Price : <?php echo $sum ?></td>
             </tr>
         </table>
-
+        <p id="showData"></p>
 </body>
 
 </html>
@@ -187,20 +207,58 @@ class SalesController
             $.get('filter.php', {
                 'customer_name': val
             }, function(data) {
-                var jsonData = JSON.parse(JSON.stringify(data)); // turn the data string into JSON
+                var jsonData = JSON.parse(JSON.stringify(data));
+                // turn the data string into JSON
 
-                console.log(JSON.parse(JSON.stringify(data)));
-                var newHtml = ""; // Initialize the var outside of the .each function
-                $.each(jsonData, function(item) {
-                    newHtml += "<td>" + item['sale_id'] + "</td>";
-                    newHtml += "<td>" + item['customer_name'] + "</td>";
-                    newHtml += "<td>" + item['customer_id'] + "</td>";
-                    newHtml += "<td>" + item['product_name'] + "</td>";
-                    newHtml += "<td>" + item['product_id'] + "</td>";
-                    newHtml += "<td>" + item['product_name'] + "</td>";
-                    newHtml += "<td>" + item['sale_date'] + "</td>";
-                })
-                $("#size").html(newHtml);
+                if (/^[\],:{}\s]*$/.test(jsonData.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+
+                    console.log("json is ok");
+
+                } else {
+
+                    console.log("fault json, not ok");
+
+                }
+
+                console.log(data);
+
+                // EXTRACT VALUE FOR HTML HEADER. 
+                var col = [];
+                for (var i = 0; i < jsonData.length; i++) {
+                    for (var key in jsonData[i]) {
+                        if (col.indexOf(key) === -1) {
+                            col.push(key);
+                        }
+                    }
+                }
+                // Delete exiting table rows.
+                $("#shop tr>td").remove();
+                var table = document.createElement("table");
+
+                // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+                var tr = table.insertRow(-1); // TABLE ROW.
+
+                for (var i = 0; i < col.length; i++) {
+                    var th = document.createElement("th"); // TABLE HEADER.
+                    th.innerHTML = col[i];
+                    tr.appendChild(th);
+                }
+                for (var i = 0; i < jsonData.length; i++) {
+
+                    tr = table.insertRow(-1);
+
+                    for (var j = 0; j < col.length; j++) {
+                        var tabCell = tr.insertCell(-1);
+                        tabCell.innerHTML = jsonData[i][col[j]];
+                    }
+                }
+
+                // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+                var divContainer = document.getElementById("showData");
+                divContainer.innerHTML = "";
+                divContainer.appendChild(table);
+
             });
         });
     });
