@@ -198,7 +198,6 @@ class SalesController
 </script>
 
 <script>
-    // $(document).ready(function() {
 
     $(".customer_name").click(function() {
         var val = $(this).attr('id');
@@ -249,8 +248,163 @@ class SalesController
             var divContainer = document.getElementById("showData");
             divContainer.innerHTML = "";
             divContainer.appendChild(table);
-
         });
     });
-    // });
+
+    $(".customer_mail").click(function() {
+        var val = $(this).attr('id');
+        // alert("customername :: " + val);
+
+        $.get('filter.php', {
+            'customer_mail': val
+        }, function(data) {
+            var jsonData = (JSON.parse(data));
+            // turn the data string into JSON
+
+            // JSON to Array
+            var resultJsonArray = Object.values(jsonData);
+
+            // EXTRACT VALUE FOR HTML HEADER. 
+            var col = [];
+            for (var i = 0; i < resultJsonArray.length; i++) {
+                for (var key in resultJsonArray[i]) {
+                    if (col.indexOf(key) === -1) {
+                        col.push(key);
+                    }
+                }
+            }
+            // Delete exiting table rows.
+            $("#shop tr>td").remove();
+            var table = document.createElement("table");
+
+            // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+            var tr = table.insertRow(-1); // TABLE ROW.
+
+            for (var i = 0; i < col.length; i++) {
+                var th = document.createElement("th"); // TABLE HEADER.
+                th.innerHTML = col[i];
+                tr.appendChild(th);
+            }
+            for (var i = 0; i < resultJsonArray.length; i++) {
+
+                tr = table.insertRow(-1);
+
+                for (var j = 0; j < col.length; j++) {
+                    var tabCell = tr.insertCell(-1);
+                    tabCell.innerHTML = resultJsonArray[i][col[j]];
+                }
+            }
+
+            // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+            var divContainer = document.getElementById("showData");
+            divContainer.innerHTML = "";
+            divContainer.appendChild(table);
+        });
+    });
+
+    $(".product_id").click(function() {
+        var val = $(this).attr('id');
+        // alert("customername :: " + val);
+
+        $.get('filter.php', {
+            'product_id': val
+        }, function(data) {
+            var jsonData = (JSON.parse(data));
+            // turn the data string into JSON
+
+            // JSON to Array
+            var resultJsonArray = Object.values(jsonData);
+
+            // EXTRACT VALUE FOR HTML HEADER. 
+            var col = [];
+            for (var i = 0; i < resultJsonArray.length; i++) {
+                for (var key in resultJsonArray[i]) {
+                    if (col.indexOf(key) === -1) {
+                        col.push(key);
+                    }
+                }
+            }
+            // Delete exiting table rows.
+            $("#shop tr>td").remove();
+            var table = document.createElement("table");
+
+            // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+            var tr = table.insertRow(-1); // TABLE ROW.
+
+            for (var i = 0; i < col.length; i++) {
+                var th = document.createElement("th"); // TABLE HEADER.
+                th.innerHTML = col[i];
+                tr.appendChild(th);
+            }
+            for (var i = 0; i < resultJsonArray.length; i++) {
+
+                tr = table.insertRow(-1);
+
+                for (var j = 0; j < col.length; j++) {
+                    var tabCell = tr.insertCell(-1);
+                    tabCell.innerHTML = resultJsonArray[i][col[j]];
+                }
+            }
+
+            // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+            var divContainer = document.getElementById("showData");
+            divContainer.innerHTML = "";
+            divContainer.appendChild(table);
+        });
+    });
+
+    $(".product_price").click(function() {
+        var val = $(this).attr('id');
+        // alert("customername :: " + val);
+
+        $.get('filter.php', {
+            'product_price': val
+        }, function(data) {
+            var jsonData = (JSON.parse(data));
+            // turn the data string into JSON
+
+            // JSON to Array
+            var resultJsonArray = Object.values(jsonData);
+
+            // EXTRACT VALUE FOR HTML HEADER. 
+            var col = [];
+            for (var i = 0; i < resultJsonArray.length; i++) {
+                for (var key in resultJsonArray[i]) {
+                    if (col.indexOf(key) === -1) {
+                        col.push(key);
+                    }
+                }
+            }
+            // Delete exiting table rows.
+            $("#shop tr>td").remove();
+            var table = document.createElement("table");
+
+            // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+            var tr = table.insertRow(-1); // TABLE ROW.
+
+            for (var i = 0; i < col.length; i++) {
+                var th = document.createElement("th"); // TABLE HEADER.
+                th.innerHTML = col[i];
+                tr.appendChild(th);
+            }
+            for (var i = 0; i < resultJsonArray.length; i++) {
+
+                tr = table.insertRow(-1);
+
+                for (var j = 0; j < col.length; j++) {
+                    var tabCell = tr.insertCell(-1);
+                    tabCell.innerHTML = resultJsonArray[i][col[j]];
+                }
+            }
+
+            // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+            var divContainer = document.getElementById("showData");
+            divContainer.innerHTML = "";
+            divContainer.appendChild(table);
+        });
+    });
+
 </script>
