@@ -190,7 +190,15 @@ class SalesController
             <td colspan="7">Total Price : <?php echo $sum ?></td>
             </tr>
         </table>
-        <p id="showData"></p>
+        <table style="width:100%">
+            <tbody>
+                <tr>
+                    <th>Total Filtered Product Price</th>
+                </tr>
+                <tr class="result">
+                </tr>
+            </tbody>
+        </table>
 </body>
 
 </html>
@@ -198,7 +206,6 @@ class SalesController
 </script>
 
 <script>
-
     $(".customer_name").click(function() {
         var val = $(this).attr('id');
         // alert("customername :: " + val);
@@ -245,9 +252,15 @@ class SalesController
             }
 
             // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
-            var divContainer = document.getElementById("showData");
+            var divContainer = document.getElementById("shop");
             divContainer.innerHTML = "";
             divContainer.appendChild(table);
+            // Total Filtered Price 
+            var theTotal = 0;
+            $("td:nth-child(6)").each(function () {
+                theTotal += parseFloat($(this).html().replace(/[^0-9.]/g, ''));
+            });
+            $(".result").text(theTotal);
         });
     });
 
@@ -297,9 +310,15 @@ class SalesController
             }
 
             // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
-            var divContainer = document.getElementById("showData");
+            var divContainer = document.getElementById("shop");
             divContainer.innerHTML = "";
             divContainer.appendChild(table);
+            // Total Filtered Price 
+            var theTotal = 0;
+            $("td:nth-child(6)").each(function () {
+                theTotal += parseFloat($(this).html().replace(/[^0-9.]/g, ''));
+            });
+            $(".result").text(theTotal);
         });
     });
 
@@ -349,9 +368,15 @@ class SalesController
             }
 
             // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
-            var divContainer = document.getElementById("showData");
+            var divContainer = document.getElementById("shop");
             divContainer.innerHTML = "";
             divContainer.appendChild(table);
+            // Total Filtered Price 
+            var theTotal = 0;
+            $("td:nth-child(6)").each(function() {
+                theTotal += parseFloat($(this).html().replace(/[^0-9.]/g, ''));
+            });
+            $(".result").text(theTotal);
         });
     });
 
@@ -401,10 +426,16 @@ class SalesController
             }
 
             // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
-            var divContainer = document.getElementById("showData");
+            var divContainer = document.getElementById("shop");
             divContainer.innerHTML = "";
             divContainer.appendChild(table);
+
+            // Total Filtered Price 
+            var theTotal = 0;
+            $("td:nth-child(6)").each(function() {
+                theTotal += parseFloat($(this).html().replace(/[^0-9.]/g, ''));
+            });
+            $(".result").text(theTotal);
         });
     });
-
 </script>
