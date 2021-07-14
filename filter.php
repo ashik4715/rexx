@@ -22,8 +22,6 @@ class Filter
                 $data[] = $row;
             }
             echo json_encode($data);
-            $content = json_encode($data);
-            var_dump($content);
         }
     }
 }

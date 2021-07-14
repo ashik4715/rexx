@@ -164,8 +164,8 @@ class SalesController
                     <th>Sale ID</th>
                     <th>Customer Name</th>
                     <th>Customer Mail</th>
-                    <th>Product Name</th>
                     <th>Product ID</th>
+                    <th>Product Name</th>
                     <th>Product Price</th>
                     <th>Sale Date</th>
                 </tr>
@@ -176,8 +176,8 @@ class SalesController
                 <td class="sale_id" id='<?php echo $rows["sale_id"] ?>'><?php echo $rows["sale_id"] ?></td>
                 <td class="customer_name" id='<?php echo $rows["customer_name"] ?>'><?php echo $rows["customer_name"] ?></td>
                 <td class="customer_mail" id='<?php echo $rows["customer_mail"] ?>'><?php echo $rows["customer_mail"] ?></td>
-                <td class="product_name" id='<?php echo $rows["product_name"] ?>'><?php echo $rows["product_name"] ?></td>
                 <td class="product_id" id='<?php echo $rows["product_id"] ?>'><?php echo $rows["product_id"] ?></td>
+                <td class="product_name" id='<?php echo $rows["product_name"] ?>'><?php echo $rows["product_name"] ?></td>
                 <td class="product_price" id='<?php echo $rows["product_price"] ?>'><?php echo $rows["product_price"] ?></td>
                 <td class="sale_date" id='<?php echo $rows["sale_date"] ?>'><?php echo $rows["sale_date"] ?></td>
             </tr>
@@ -198,68 +198,59 @@ class SalesController
 </script>
 
 <script>
-    $(document).ready(function() {
+    // $(document).ready(function() {
 
-        $(".customer_name").click(function() {
-            var val = $(this).attr('id');
-            // alert("customername :: " + val);
+    $(".customer_name").click(function() {
+        var val = $(this).attr('id');
+        // alert("customername :: " + val);
 
-            $.get('filter.php', {
-                'customer_name': val
-            }, function(data) {
-                var jsonData = JSON.parse(JSON.stringify(data));
-                // turn the data string into JSON
+        $.get('filter.php', {
+            'customer_name': val
+        }, function(data) {
+            var jsonData = (JSON.parse(data));
+            // turn the data string into JSON
 
-                if (/^[\],:{}\s]*$/.test(jsonData.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+            // JSON to Array
+            var resultJsonArray = Object.values(jsonData);
 
-                    console.log("json is ok");
-
-                } else {
-
-                    console.log("fault json, not ok");
-
-                }
-
-                console.log(data);
-
-                // EXTRACT VALUE FOR HTML HEADER. 
-                var col = [];
-                for (var i = 0; i < jsonData.length; i++) {
-                    for (var key in jsonData[i]) {
-                        if (col.indexOf(key) === -1) {
-                            col.push(key);
-                        }
+            // EXTRACT VALUE FOR HTML HEADER. 
+            var col = [];
+            for (var i = 0; i < resultJsonArray.length; i++) {
+                for (var key in resultJsonArray[i]) {
+                    if (col.indexOf(key) === -1) {
+                        col.push(key);
                     }
                 }
-                // Delete exiting table rows.
-                $("#shop tr>td").remove();
-                var table = document.createElement("table");
+            }
+            // Delete exiting table rows.
+            $("#shop tr>td").remove();
+            var table = document.createElement("table");
 
-                // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+            // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
 
-                var tr = table.insertRow(-1); // TABLE ROW.
+            var tr = table.insertRow(-1); // TABLE ROW.
 
-                for (var i = 0; i < col.length; i++) {
-                    var th = document.createElement("th"); // TABLE HEADER.
-                    th.innerHTML = col[i];
-                    tr.appendChild(th);
+            for (var i = 0; i < col.length; i++) {
+                var th = document.createElement("th"); // TABLE HEADER.
+                th.innerHTML = col[i];
+                tr.appendChild(th);
+            }
+            for (var i = 0; i < resultJsonArray.length; i++) {
+
+                tr = table.insertRow(-1);
+
+                for (var j = 0; j < col.length; j++) {
+                    var tabCell = tr.insertCell(-1);
+                    tabCell.innerHTML = resultJsonArray[i][col[j]];
                 }
-                for (var i = 0; i < jsonData.length; i++) {
+            }
 
-                    tr = table.insertRow(-1);
+            // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+            var divContainer = document.getElementById("showData");
+            divContainer.innerHTML = "";
+            divContainer.appendChild(table);
 
-                    for (var j = 0; j < col.length; j++) {
-                        var tabCell = tr.insertCell(-1);
-                        tabCell.innerHTML = jsonData[i][col[j]];
-                    }
-                }
-
-                // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
-                var divContainer = document.getElementById("showData");
-                divContainer.innerHTML = "";
-                divContainer.appendChild(table);
-
-            });
         });
     });
+    // });
 </script>
