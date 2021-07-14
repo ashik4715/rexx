@@ -48,16 +48,6 @@ class SalesController
 
     function read()
     {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            // collect value of input field
-            $name = $_POST['fname'];
-            if (empty($name)) {
-                echo "Name is empty";
-            } else {
-                echo $name;
-            }
-        }
-
         // get containts from sales JSON
         $jsonContents = file_get_contents('sales.json');
 
@@ -87,7 +77,6 @@ class SalesController
                 )";
             mysqli_query($this->conn, $queryJSON);
         }
-        print_r($data);
     }
 }
 
@@ -163,14 +152,14 @@ class SalesController
             <?php
             }
             ?>
-            <tr>
-                <td><?php echo $rows["sale_id"] ?></td>
-                <td><?php echo $rows["customer_name"] ?></td>
-                <td><?php echo $rows["customer_mail"] ?></td>
-                <td><?php echo $rows["product_name"] ?></td>
-                <td><?php echo $rows["product_id"] ?></td>
-                <td><?php echo $rows["product_price"] ?></td>
-                <td><?php echo $rows["sale_date"] ?></td>
+            <tr id="size">
+                <td class="sale_id" id='<?php echo $rows["sale_id"] ?>'><?php echo $rows["sale_id"] ?></td>
+                <td class="customer_name"id='<?php echo $rows["customer_name"] ?>'><?php echo $rows["customer_name"] ?></td>
+                <td class="customer_mail"id='<?php echo $rows["customer_mail"] ?>'><?php echo $rows["customer_mail"] ?></td>
+                <td class="product_name"id='<?php echo $rows["product_name"] ?>'><?php echo $rows["product_name"] ?></td>
+                <td class="product_id"id='<?php echo $rows["product_id"] ?>'><?php echo $rows["product_id"] ?></td>
+                <td class="product_price"id='<?php echo $rows["product_price"] ?>'><?php echo $rows["product_price"] ?></td>
+                <td class="sale_date"id='<?php echo $rows["sale_date"] ?>'><?php echo $rows["sale_date"] ?></td>
             </tr>
             <tr>
             <?php
@@ -183,4 +172,48 @@ class SalesController
         </table>
 
 </body>
+
 </html>
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous">
+</script>
+<script>
+    // var client = new HttpClient();
+    // client.get('http://127.0.0.1/rexx/filter.php', function(response) {
+    //     // do something with response
+
+    //     var jsonData = JSON.parse(JSON.stringify(data)); // turn the data string into JSON
+
+    //     console.log(JSON.parse(JSON.stringify(data)));
+        
+    // });
+
+    $(document).ready(function() {
+
+        $(".customer_name").click(function() {
+            var val = $(this).attr('id');
+            // alert("customername :: " + val);
+
+            $.get('filter.php', {
+                'customer_name': val
+            }, function(data) {
+                var jsonData = JSON.parse(JSON.stringify(data)); // turn the data string into JSON
+
+                console.log(JSON.parse(JSON.stringify(data)));
+                var newHtml = ""; // Initialize the var outside of the .each function
+                $.each(jsonData, function(item) {
+                    newHtml += "<td>" + item['sale_id'] + "</td>";
+                    newHtml += "<td>" + item['customer_name'] + "</td>";
+                    newHtml += "<td>" + item['customer_id'] + "</td>";
+                    newHtml += "<td>" + item['product_name'] + "</td>";
+                    newHtml += "<td>" + item['product_id'] + "</td>";
+                    newHtml += "<td>" + item['product_name'] + "</td>";
+                    newHtml += "<td>" + item['sale_date'] + "</td>";
+                })
+                $("#size").html(newHtml);
+            });
+        });
+    });
+</script>
