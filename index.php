@@ -154,12 +154,12 @@ class SalesController
             ?>
             <tr id="size">
                 <td class="sale_id" id='<?php echo $rows["sale_id"] ?>'><?php echo $rows["sale_id"] ?></td>
-                <td class="customer_name"id='<?php echo $rows["customer_name"] ?>'><?php echo $rows["customer_name"] ?></td>
-                <td class="customer_mail"id='<?php echo $rows["customer_mail"] ?>'><?php echo $rows["customer_mail"] ?></td>
-                <td class="product_name"id='<?php echo $rows["product_name"] ?>'><?php echo $rows["product_name"] ?></td>
-                <td class="product_id"id='<?php echo $rows["product_id"] ?>'><?php echo $rows["product_id"] ?></td>
-                <td class="product_price"id='<?php echo $rows["product_price"] ?>'><?php echo $rows["product_price"] ?></td>
-                <td class="sale_date"id='<?php echo $rows["sale_date"] ?>'><?php echo $rows["sale_date"] ?></td>
+                <td class="customer_name" id='<?php echo $rows["customer_name"] ?>'><?php echo $rows["customer_name"] ?></td>
+                <td class="customer_mail" id='<?php echo $rows["customer_mail"] ?>'><?php echo $rows["customer_mail"] ?></td>
+                <td class="product_name" id='<?php echo $rows["product_name"] ?>'><?php echo $rows["product_name"] ?></td>
+                <td class="product_id" id='<?php echo $rows["product_id"] ?>'><?php echo $rows["product_id"] ?></td>
+                <td class="product_price" id='<?php echo $rows["product_price"] ?>'><?php echo $rows["product_price"] ?></td>
+                <td class="sale_date" id='<?php echo $rows["sale_date"] ?>'><?php echo $rows["sale_date"] ?></td>
             </tr>
             <tr>
             <?php
@@ -174,22 +174,10 @@ class SalesController
 </body>
 
 </html>
-<script
-  src="https://code.jquery.com/jquery-3.6.0.min.js"
-  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-  crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous">
 </script>
+
 <script>
-    // var client = new HttpClient();
-    // client.get('http://127.0.0.1/rexx/filter.php', function(response) {
-    //     // do something with response
-
-    //     var jsonData = JSON.parse(JSON.stringify(data)); // turn the data string into JSON
-
-    //     console.log(JSON.parse(JSON.stringify(data)));
-        
-    // });
-
     $(document).ready(function() {
 
         $(".customer_name").click(function() {
